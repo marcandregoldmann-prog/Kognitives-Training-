@@ -28,7 +28,6 @@ View your app in AI Studio: https://ai.studio/apps/eaea2d25-b454-4431-bb31-c8236
 
 Die App enthält jetzt ein Web App Manifest mit eingebetteten (nicht-binären) Icons und einen Service Worker für Offline-Caching.
 
-
 ## Fehlerbehebung bei weißem Bildschirm auf Android/Chrome
 
 Wenn nach Updates ein weißer Bildschirm erscheint, in Chrome einmal **Website-Daten löschen** oder die App neu installieren, damit ein alter Service Worker-Cache ersetzt wird.
