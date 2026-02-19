@@ -1,0 +1,39 @@
+@import "tailwindcss";
+
+@theme {
+  --font-serif: "Georgia", "Times New Roman", serif;
+  --font-sans: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+body {
+  font-family: var(--font-sans);
+  background-color: #f5f5f0;
+  color: #1a1a1a;
+  overflow: hidden;
+  touch-action: manipulation;
+}
+
+.serif {
+  font-family: var(--font-serif);
+}
+
+/* Soft rounded corners for a child-friendly feel */
+.card {
+  background-color: #ffffff;
+  border-radius: 32px;
+  box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.05);
+}
+
+.olive-button {
+  background-color: #5A5A40;
+  color: white;
+  border-radius: 9999px;
+  padding: 12px 24px;
+  letter-spacing: 0.5px;
+  transition: transform 0.2s ease;
+}
+
+.olive-button:active {
+  transform: scale(0.95);
+}
+
