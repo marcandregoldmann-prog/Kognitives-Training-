@@ -15,6 +15,18 @@ View your app in AI Studio: https://ai.studio/apps/eaea2d25-b454-4431-bb31-c8236
 
 1. Install dependencies:
    `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
+2. Run the app:
    `npm run dev`
+
+## PWA-Installation auf Android (Chrome)
+
+1. App mit HTTPS deployen (oder lokal per `npm run dev` testen).
+2. In Chrome öffnen.
+3. Über das 3-Punkte-Menü **"Zum Startbildschirm hinzufügen"** wählen.
+4. Auf Smartphone und Tablet jeweils installieren.
+
+Die App enthält ein Web App Manifest mit eingebetteten (nicht-binären) Icons und einen Service Worker für Offline-Caching. Es wird kein Gemini API Key benötigt.
+
+## Fehlerbehebung bei weißem Bildschirm auf Android/Chrome
+
+Wenn nach Updates ein weißer Bildschirm erscheint, in Chrome einmal **Website-Daten löschen** oder die App neu installieren, damit ein alter Service Worker-Cache ersetzt wird.
