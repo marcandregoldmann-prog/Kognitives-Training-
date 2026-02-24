@@ -1,5 +1,13 @@
-const CACHE_NAME = 'schlaue-koepfe-v8';
-const APP_SHELL_FILES = ['./', './index.html', './manifest.json'];
+const CACHE_NAME = 'schlaue-koepfe-v9';
+const APP_SHELL_FILES = [
+  './',
+  './index.html',
+  './manifest.json',
+  './favicon.png',
+  './pwa-192x192.png',
+  './pwa-512x512.png',
+  './maskable-icon-512x512.png',
+];
 
 self.addEventListener('install', (event) => {
   event.waitUntil(caches.open(CACHE_NAME).then((cache) => cache.addAll(APP_SHELL_FILES)));
