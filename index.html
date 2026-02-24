@@ -12,6 +12,21 @@
   </head>
   <body>
     <div id="root"></div>
+    <script>
+      window.onerror = function(message, source, lineno, colno, error) {
+        const errorDiv = document.createElement('div');
+        errorDiv.style.cssText = 'position:fixed;top:0;left:0;width:100%;background:#ffebee;color:#b71c1c;padding:20px;z-index:9999;border-bottom:2px solid #b71c1c;font-family:monospace;overflow:auto;max-height:50vh;box-shadow:0 4px 6px rgba(0,0,0,0.1);';
+        errorDiv.innerHTML = '<strong style="font-size:1.2em">Application Error:</strong><br>' + message + '<br><small>' + source + ':' + lineno + ':' + colno + '</small><br><pre style="white-space:pre-wrap;word-break:break-word;">' + (error && error.stack ? error.stack : '') + '</pre><button onclick="this.parentElement.remove()" style="margin-top:10px;padding:8px 16px;background:#b71c1c;color:white;border:none;border-radius:4px;cursor:pointer;">Dismiss</button>';
+        document.body.appendChild(errorDiv);
+        return false;
+      };
+      window.onunhandledrejection = function(event) {
+        const errorDiv = document.createElement('div');
+        errorDiv.style.cssText = 'position:fixed;top:0;left:0;width:100%;background:#ffebee;color:#b71c1c;padding:20px;z-index:9999;border-bottom:2px solid #b71c1c;font-family:monospace;overflow:auto;max-height:50vh;box-shadow:0 4px 6px rgba(0,0,0,0.1);';
+        errorDiv.innerHTML = '<strong style="font-size:1.2em">Unhandled Promise Rejection:</strong><br>' + event.reason + '<br><button onclick="this.parentElement.remove()" style="margin-top:10px;padding:8px 16px;background:#b71c1c;color:white;border:none;border-radius:4px;cursor:pointer;">Dismiss</button>';
+        document.body.appendChild(errorDiv);
+      };
+    </script>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
