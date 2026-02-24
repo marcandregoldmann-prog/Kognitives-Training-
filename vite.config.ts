@@ -7,8 +7,7 @@ export default defineConfig({
   base: './', // Use relative base for flexible hosting (e.g. GitHub Pages)
   plugins: [
     react(),
-    tailwindcss(),
-    // Legacy plugin removed to simplify build and avoid conflicts on modern devices
+    tailwindcss()
   ],
   resolve: {
     alias: {
@@ -23,7 +22,5 @@ export default defineConfig({
   build: {
     target: 'es2022', // Modern Android/iOS target
     outDir: 'dist',
-    minify: 'esbuild',
-    // sourcemap: true, // Enable if debugging production build is needed
   }
 });
