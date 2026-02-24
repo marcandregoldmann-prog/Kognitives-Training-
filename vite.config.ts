@@ -20,7 +20,7 @@ export default defineConfig({
     hmr: process.env.DISABLE_HMR !== 'true',
   },
   build: {
-    target: 'es2022', // Modern Android/iOS target
+    target: 'es2015', // Ensure compatibility with older Android devices
     outDir: 'dist',
   }
 });

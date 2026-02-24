@@ -12,31 +12,59 @@
     <style>
       html, body { height: 100%; margin: 0; padding: 0; background-color: #f5f5f0; }
       #root { min-height: 100vh; }
+      .loading-container { display: flex; justify-content: center; align-items: center; height: 100vh; flex-direction: column; font-family: sans-serif; color: #555; }
+      .loading-title { margin-bottom: 20px; font-size: 20px; }
+      .loading-subtitle { font-size: 12px; color: #888; }
+      .error-overlay { position: fixed; top: 0; left: 0; width: 100%; background: #ffebee; color: #b71c1c; padding: 20px; z-index: 9999; border-bottom: 2px solid #b71c1c; font-family: monospace; overflow: auto; max-height: 50vh; box-shadow: 0 4px 6px rgba(0,0,0,0.1); word-break: break-word; }
+      .dismiss-btn { margin-top: 10px; padding: 8px 16px; background: #b71c1c; color: white; border: none; border-radius: 4px; cursor: pointer; }
     </style>
   </head>
   <body>
     <div id="root">
-      <div style="display:flex;justify-content:center;align-items:center;height:100vh;flex-direction:column;font-family:sans-serif;color:#555;">
-        <div style="margin-bottom:20px;font-size:20px;">Lade Spiel...</div>
-        <div style="font-size:12px;color:#888;">Bitte warten...</div>
+      <div class="loading-container">
+        <div id="loading-text" class="loading-title">Lade Spiel...</div>
+        <div id="loading-subtext" class="loading-subtitle">Bitte warten...</div>
       </div>
     </div>
     <script>
-      // Global error handler to catch and display errors on mobile
-      window.onerror = function(message, source, lineno, colno, error) {
+      // Global error handler
+      function showError(title, message, details) {
         const errorDiv = document.createElement('div');
-        errorDiv.style.cssText = 'position:fixed;top:0;left:0;width:100%;background:#ffebee;color:#b71c1c;padding:20px;z-index:9999;border-bottom:2px solid #b71c1c;font-family:monospace;overflow:auto;max-height:50vh;box-shadow:0 4px 6px rgba(0,0,0,0.1);word-break:break-word;';
-        errorDiv.innerHTML = '<strong style="font-size:1.2em">Application Error:</strong><br>' + message + '<br><small>' + source + ':' + lineno + ':' + colno + '</small><br><pre style="white-space:pre-wrap;word-break:break-word;">' + (error && error.stack ? error.stack : '') + '</pre><button onclick="this.parentElement.remove()" style="margin-top:10px;padding:8px 16px;background:#b71c1c;color:white;border:none;border-radius:4px;cursor:pointer;">Dismiss</button>';
+        errorDiv.className = 'error-overlay';
+        errorDiv.innerHTML = '<strong style="font-size:1.2em">' + title + '</strong><br>' + message +
+          (details ? '<br><pre style="white-space:pre-wrap;word-break:break-word;">' + details + '</pre>' : '') +
+          '<br><button onclick="this.parentElement.remove()" class="dismiss-btn">Dismiss</button>';
         document.body.appendChild(errorDiv);
+
+        // Update loading text to indicate failure
+        const loadingText = document.getElementById('loading-text');
+        if (loadingText) loadingText.textContent = 'Fehler beim Laden';
+        const loadingSub = document.getElementById('loading-subtext');
+        if (loadingSub) loadingSub.textContent = 'Siehe Fehlermeldung oben.';
+      }
+
+      window.onerror = function(message, source, lineno, colno, error) {
+        showError('Application Error', message, source + ':' + lineno + ':' + colno + '\n' + (error && error.stack ? error.stack : ''));
         return false;
       };
 
       window.onunhandledrejection = function(event) {
-        const errorDiv = document.createElement('div');
-        errorDiv.style.cssText = 'position:fixed;top:0;left:0;width:100%;background:#ffebee;color:#b71c1c;padding:20px;z-index:9999;border-bottom:2px solid #b71c1c;font-family:monospace;overflow:auto;max-height:50vh;box-shadow:0 4px 6px rgba(0,0,0,0.1);word-break:break-word;';
-        errorDiv.innerHTML = '<strong style="font-size:1.2em">Unhandled Promise Rejection:</strong><br>' + event.reason + '<br><button onclick="this.parentElement.remove()" style="margin-top:10px;padding:8px 16px;background:#b71c1c;color:white;border:none;border-radius:4px;cursor:pointer;">Dismiss</button>';
-        document.body.appendChild(errorDiv);
+        showError('Unhandled Promise Rejection', event.reason);
       };
+
+      // Catch resource loading errors (e.g. script 404)
+      window.addEventListener('error', function(e) {
+        if (e.target && (e.target.tagName === 'SCRIPT' || e.target.tagName === 'LINK')) {
+          showError('Resource Load Error', 'Failed to load resource: ' + (e.target.src || e.target.href));
+        }
+      }, true);
+
+      // Timeout check
+      setTimeout(function() {
+        if (!window.appLoaded) {
+          showError('Timeout Error', 'The application took too long to start.', 'Check your internet connection or try refreshing.');
+        }
+      }, 5000); // 5 seconds timeout
     </script>
     <script type="module" src="/src/main.tsx"></script>
   </body>
