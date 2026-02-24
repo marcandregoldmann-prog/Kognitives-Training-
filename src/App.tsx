@@ -176,12 +176,21 @@ export default function App() {
 
   // Stats & Persistence
   const [stats, setStats] = useState<GameStats>(() => {
-    const saved = localStorage.getItem('game_stats');
-    return saved ? JSON.parse(saved) : INITIAL_STATS;
+    try {
+      const saved = localStorage.getItem('game_stats');
+      return saved ? JSON.parse(saved) : INITIAL_STATS;
+    } catch (e) {
+      console.warn('Failed to load stats from localStorage:', e);
+      return INITIAL_STATS;
+    }
   });
 
   useEffect(() => {
-    localStorage.setItem('game_stats', JSON.stringify(stats));
+    try {
+      localStorage.setItem('game_stats', JSON.stringify(stats));
+    } catch (e) {
+      console.warn('Failed to save stats to localStorage:', e);
+    }
   }, [stats]);
 
   const updateStats = (type: GameType, correct: boolean) => {
@@ -203,7 +212,11 @@ export default function App() {
 
   const resetStats = () => {
     setStats(INITIAL_STATS);
-    localStorage.removeItem('game_stats');
+    try {
+      localStorage.removeItem('game_stats');
+    } catch (e) {
+      console.warn('Failed to clear stats from localStorage:', e);
+    }
     setLevel(1);
   };
 

@@ -2,24 +2,29 @@ import {StrictMode} from 'react';
 import {createRoot} from 'react-dom/client';
 import App from './App.tsx';
 import './index.css';
+import ErrorBoundary from './ErrorBoundary';
 
-createRoot(document.getElementById('root')!).render(
-  <StrictMode>
-    <App />
-  </StrictMode>,
-);
+// Indicate that the script has loaded successfully
+(window as any).appLoaded = true;
+const loadingText = document.getElementById('loading-text');
+if (loadingText) loadingText.textContent = 'Initialisiere...';
 
-// Register Service Worker for offline support
-if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
-    const swUrl = new URL('./sw.js', window.location.href).pathname;
-    navigator.serviceWorker
-      .register(swUrl)
-      .then((registration) => {
-        console.log('SW registered: ', registration);
-      })
-      .catch((registrationError) => {
-        console.log('SW registration failed: ', registrationError);
-      });
-  });
+try {
+  const rootElement = document.getElementById('root');
+  if (!rootElement) {
+    throw new Error("Root element not found");
+  }
+
+  createRoot(rootElement).render(
+    <StrictMode>
+      <ErrorBoundary>
+        <App />
+      </ErrorBoundary>
+    </StrictMode>,
+  );
+} catch (e) {
+  console.error("Failed to render app:", e);
+  if (loadingText) loadingText.textContent = 'Fehler beim Starten der App';
+  const loadingSub = document.getElementById('loading-subtext');
+  if (loadingSub) loadingSub.textContent = String(e);
 }

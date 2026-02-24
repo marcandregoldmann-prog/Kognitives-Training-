@@ -4,8 +4,11 @@ import path from 'path';
 import {defineConfig} from 'vite';
 
 export default defineConfig({
-  base: './',
-  plugins: [react(), tailwindcss()],
+  base: './', // Use relative base for flexible hosting (e.g. GitHub Pages)
+  plugins: [
+    react(),
+    tailwindcss()
+  ],
   resolve: {
     alias: {
       '@': path.resolve(__dirname, '.'),
@@ -16,4 +19,8 @@ export default defineConfig({
     // Do not modify—file watching is disabled to prevent flickering during agent edits.
     hmr: process.env.DISABLE_HMR !== 'true',
   },
+  build: {
+    target: 'es2015', // Ensure compatibility with older Android devices
+    outDir: 'dist',
+  }
 });
