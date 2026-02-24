@@ -1,4 +1,4 @@
-const CACHE_NAME = 'schlaue-koepfe-v6';
+const CACHE_NAME = 'schlaue-koepfe-v7';
 const APP_SHELL_FILES = ['./', './index.html', './manifest.json'];
 
 self.addEventListener('install', (event) => {

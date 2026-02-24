@@ -1,3 +1,9 @@
+# 🚨 WICHTIG: Manuelle Einstellung erforderlich!
+
+Siehe [DEPLOYMENT_FIX.md](DEPLOYMENT_FIX.md) für die genauen Schritte, um die GitHub Pages Bereitstellung zu reparieren.
+
+---
+
 <div align="center">
 <img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
 </div>
