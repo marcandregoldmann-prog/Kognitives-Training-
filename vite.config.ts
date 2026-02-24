@@ -1,17 +1,14 @@
 import tailwindcss from '@tailwindcss/vite';
 import react from '@vitejs/plugin-react';
-import legacy from '@vitejs/plugin-legacy';
 import path from 'path';
 import {defineConfig} from 'vite';
 
 export default defineConfig({
-  base: './',
+  base: './', // Use relative base for flexible hosting (e.g. GitHub Pages)
   plugins: [
     react(),
     tailwindcss(),
-    legacy({
-      targets: ['defaults', 'not IE 11'],
-    }),
+    // Legacy plugin removed to simplify build and avoid conflicts on modern devices
   ],
   resolve: {
     alias: {
@@ -24,7 +21,9 @@ export default defineConfig({
     hmr: process.env.DISABLE_HMR !== 'true',
   },
   build: {
-    target: 'es2015', // Support older Android browsers
+    target: 'es2022', // Modern Android/iOS target
     outDir: 'dist',
+    minify: 'esbuild',
+    // sourcemap: true, // Enable if debugging production build is needed
   }
 });
