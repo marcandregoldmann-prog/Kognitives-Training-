@@ -13,16 +13,16 @@ createRoot(document.getElementById('root')!).render(
 );
 
 // Register Service Worker for offline support
-if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
-    const swUrl = new URL('./sw.js', window.location.href).pathname;
-    navigator.serviceWorker
-      .register(swUrl)
-      .then((registration) => {
-        console.log('SW registered: ', registration);
-      })
-      .catch((registrationError) => {
-        console.log('SW registration failed: ', registrationError);
-      });
-  });
-}
+// if ('serviceWorker' in navigator) {
+//   window.addEventListener('load', () => {
+//     const swUrl = new URL('./sw.js', window.location.href).pathname;
+//     navigator.serviceWorker
+//       .register(swUrl)
+//       .then((registration) => {
+//         console.log('SW registered: ', registration);
+//       })
+//       .catch((registrationError) => {
+//         console.log('SW registration failed: ', registrationError);
+//       });
+//   });
+// }

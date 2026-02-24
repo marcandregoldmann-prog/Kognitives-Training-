@@ -4,8 +4,11 @@ import path from 'path';
 import {defineConfig} from 'vite';
 
 export default defineConfig({
-  base: './',
-  plugins: [react(), tailwindcss()],
+  base: './', // Use relative base for flexible hosting (e.g. GitHub Pages)
+  plugins: [
+    react(),
+    tailwindcss()
+  ],
   resolve: {
     alias: {
       '@': path.resolve(__dirname, '.'),
@@ -17,7 +20,7 @@ export default defineConfig({
     hmr: process.env.DISABLE_HMR !== 'true',
   },
   build: {
-    target: 'es2015', // Support older Android browsers
+    target: 'es2022', // Modern Android/iOS target
     outDir: 'dist',
   }
 });
