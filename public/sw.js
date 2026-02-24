@@ -1,5 +1,5 @@
-const CACHE_NAME = 'schlaue-koepfe-v3';
-const APP_SHELL_FILES = ['/', '/manifest.json'];
+const CACHE_NAME = 'schlaue-koepfe-v6';
+const APP_SHELL_FILES = ['./', './index.html', './manifest.json'];
 
 self.addEventListener('install', (event) => {
   event.waitUntil(caches.open(CACHE_NAME).then((cache) => cache.addAll(APP_SHELL_FILES)));
@@ -16,7 +16,7 @@ self.addEventListener('activate', (event) => {
 });
 
 self.addEventListener('fetch', (event) => {
-  const { request } = event;
+  const {request} = event;
 
   if (request.method !== 'GET') {
     return;
@@ -27,11 +27,16 @@ self.addEventListener('fetch', (event) => {
       fetch(request)
         .then((response) => {
           const responseClone = response.clone();
-          caches.open(CACHE_NAME).then((cache) => cache.put('/', responseClone));
+          caches.open(CACHE_NAME).then((cache) => cache.put(request, responseClone));
           return response;
         })
-        .catch(() => caches.match('/') || caches.match('/index.html')),
+        .catch(() => caches.match(request).then((m) => m || caches.match('./') || caches.match('./index.html'))),
     );
+    return;
+  }
+
+  const url = new URL(request.url);
+  if (url.origin !== self.location.origin) {
     return;
   }
 
@@ -43,13 +48,13 @@ self.addEventListener('fetch', (event) => {
 
       return fetch(request)
         .then((networkResponse) => {
-          if (networkResponse.ok && new URL(request.url).origin === self.location.origin) {
+          if (networkResponse.ok) {
             const responseClone = networkResponse.clone();
             caches.open(CACHE_NAME).then((cache) => cache.put(request, responseClone));
           }
           return networkResponse;
         })
-        .catch(() => caches.match('/'));
+        .catch(() => Response.error());
     }),
   );
 });
